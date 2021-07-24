@@ -94,10 +94,8 @@ def getCommentHtml(call, index):
 		      </div>
 		      <span class="username">%s</span>
 		      %s
-
 		      <span class="date"> - %s -</span>
 		      %s
-
 		      <div class="awards">
 		        %s
 		        %s
@@ -105,7 +103,6 @@ def getCommentHtml(call, index):
 		    </div>
 		    <div class="comment-content">
 		      %s
-
 		      <div class="comment-bottom">
 		        <div class="vote-arrows">
 		          <button>
@@ -129,7 +126,6 @@ def getCommentHtml(call, index):
 		          </button>
 		        </div>
 		      </div>
-
 		    </div>
 		  </div>
 		</div>
@@ -161,33 +157,11 @@ def commentsnapbot():
 	#css = ['commentstyle.css']
 	#imgkit.from_string(HTML, 'out.jpg', options,css=css)
 	return
-=======
-reddit = praw.Reddit(
-    client_id=" ",
-<<<<<<< HEAD
-    client_secret="",
-    username="commentshotbot",
-    password="",
-=======
-    client_secret=" ",
-    username="commentshotbot",
-    password=" ",
->>>>>>> fd9db7f2e4271dacf3912900e86b068a9cf096ca
-    user_agent="Desktop:(by github.com/ouzkagan):Reddit Comment Snapshot Bot",
-)
-
-param = 2
-def commentsnapbot():
-	keyWords = ['example']
-	print("started")
-	count = 0
->>>>>>> 03b867da9d12495e8ed8e512c9af72c253195a7c
 	while True:
 		time.sleep(1)
 		# Checks each comment in the generated stream of new comments
 		# Skips bot calls that were made before the bot was running
 		#for comment in reddit.subreddit('redditdev').stream.comments(limit=None):
-<<<<<<< HEAD
 		for comment in reddit.subreddit('announcements').comments(limit=None):
 			count = count + 1
 			for keyWord in keyWords:
@@ -213,21 +187,3 @@ def commentsnapbot():
 						print(comment.submission)
 					print('\n\n')
 commentsnapbot()
-=======
-		for comment in reddit.subreddit('redditdev').comments(limit=None):
-			count = count + 1
-
-			for keyWord in keyWords:
-				if (keyWord in comment.body):
-					print(str(comment.body_html) + ' by ' + str(comment.author))
-					if(comment.parent().id.startswith('t3')):
-						print(comment.parent().body_html)
-
-					else:
-						print(comment.submission)
-					print('\n\n')
-
-			if(count == 3):
-				break
-commentsnapbot()
->>>>>>> 03b867da9d12495e8ed8e512c9af72c253195a7c
