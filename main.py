@@ -6,6 +6,7 @@ import json
 import imgkit
 import pprint
 from helpers import get_config
+from upload import uploadsnapshot
 
 config = get_config()
 config.read('auth.ini')
@@ -34,7 +35,9 @@ def human_format(num):
     # add more suffixes if you need them
     return '%.0f%s' % (num, ['', 'K', 'M', 'G', 'T', 'P'][magnitude])
 
-def generateImage(HTML, pagewidth):
+def generateImage(HTML, totalcomment):
+	commentwidth = 550
+	pagewidth = commentwidth + ((totalcomment + 1)*22) +20 	
 	options = {
 	   'crop-w': pagewidth,
 	}
@@ -141,15 +144,6 @@ def getCommentHtml(call, index):
 
 
 def getSubmissionHtml(submission):
-	# print(submission.title)
-	# print(submission.selftext == "")
-	# if submission.selftext != "":
-	# 	print(submission.selftext_html)
-	# else:
-	# 	print(submission.preview['images'][0]['resolutions'][3]['url'])
-	# print(submission.score)
-	# print(submission.all_awardings)
-	# print(submission.num_comments)
 	sr = submission.subreddit
 	sr_image = sr.icon_img
 	sr_name = sr.display_name
@@ -200,7 +194,7 @@ def getSubmissionHtml(submission):
 	else:
 		post_content = """
 			<img class="post-img" src="%s">
-		"""%(submission.preview['images'][0]['resolutions'][3]['url'])
+		"""%(submission.preview['images'][0]['resolutions'][len(submission.preview['images'][0]['resolutions']) - 1]['url'])
 
 	score = human_format(submission.score)
 	comments_count = submission.num_comments
@@ -260,7 +254,7 @@ def getSubmissionHtml(submission):
 		          <div class="votecount">%s</div>
 		        </div>
 		      </div>
-		      <hr />
+		      <div class="divider"></div>
 		    </div>
 		  </div>
 		</div>
@@ -269,86 +263,66 @@ def getSubmissionHtml(submission):
 	return submissionTemplate
 #to generate reply for different kind of requests in the future
 def generateReply(link1, link2):
-	template = """
-	Hi, here is your snapshot: \n
-	[Parent comment](%s)\n
-	[Upper comments with post](%s)\n
-
-	<sub>Still in Beta  - *[github link to contribute](https://github.com/ouzkagan/redditsnapshotbot)*</sub>
-	"""%(link1, link2)
+	link1template = ""
+	if link1 != "":
+		link1template =f'[Parent comment]({link1})' 
+	link2template = ""
+	if link2 != "":
+		link2template = f'[All upper chain]({link2})'
+	template = f'Hi, here is your snapshot:\n\n {link1template} \n\n {link2template} \n\n_Still in Beta  - [github link to contribute](https://github.com/ouzkagan/redditsnapshotbot)_'
 	return template
-def commentsnapbot():
-	keywords = ['!snapshot','!snapshotbot','!commentsnapshot','!commentsnapshotbot']
+def snapshotbot():
+	keywords = ['!snapshot', '!snapshotbot', 'u/snapshotterbot','u/snapshotbot','u/snapshotterbot']
 	params = ['all', 'top']
-	print("started")
-	count = 0
-
-	# comment = reddit.comment("h6cnx2s")
-	# HTML = getCommentHtml(comment,0)
-	# totalcomment = 1
-	# commentindex = 0
-	# commentwidth = 600
-	# pagewidth = commentwidth + (totalcomment*21*2) + 40
-
-
-	'''
-		To include submission => "selftext" ?= "preview['images']['resolutions'][3].url" + "['title']" + "['score']" + "['all_awardings']" + "num_comments"
-	'''
-	#submission = reddit.submission(id="oqup6m")
-	submission = reddit.submission("oqx075")
-	# print(submission.title)  # to make it non-lazy
-	# sr = submission.subreddit
-	# sr.icon_img
-	# pprint.pprint(vars(sr))
-	# print(submission.author)
-	#print(getSubmissionHtml(submission))
-	generateImage(getSubmissionHtml(submission), 600)
-	#options = {
-	#    'crop-w': pagewidth,
-	#}
-	#css = ['commentstyle.css']
-	#imgkit.from_string(HTML, 'out.jpg', options,css=css)
-	return
-	while True:
-		time.sleep(1)
-		# Checks each comment in the generated stream of new comments
-		# Skips bot calls that were made before the bot was running
-		#for comment in reddit.subreddit('all').stream.comments(limit=None):
-		for comment in reddit.subreddit('phrexy').comments(limit=None):
-			count = count + 1
-			howmany = ""
-			for keyword in keywords:
-				if (keyword in comment.body.lower()):
-					for param in params:
-						if param in comment.body.lower():
-							howmany = param
-							break
-					#print(str(comment.body_html) + ' by ' + str(comment.author))
-					#if(comment.parent().id.startswith('t3')):
-					#print(comment.parent_id)
-					allparents = []
-					parent = comment.parent()
-					single = getCommentHtml(comment.parent(), 0)
-					while(parent.name.startswith('t1')):
-						#take snapshot of parent
-						allparents.append(parent)
-						#print(parent.body)  # to make it non-lazy
-						#pprint.pprint(vars(parent))
-						#print(comment.parent().link_id.startswith('t3'))
-						#HTML = getCommentHtml(comment,0)
-						parent = parent.parent()
-						#return
-					submission = getSubmissionHtml(parent)
-
-
-					parentcount = len(allparents) #for page size
-					count = 0
-					chaintotop = ""
-					for p in allparents:
-						chaintotop += getCommentHtml(p, count)
-						count = count + 1
-					print(chaintotop)
+	# Checks each comment in the generated stream of new comments
+	# Skips bot calls that were made before the bot was running
+	#for comment in reddit.subreddit('memes').comments(limit=None):
+	for comment in reddit.subreddit('all').stream.comments():
+		howmany = ""
+		for keyword in keywords:
+			if (keyword in comment.body.lower()):
+				for param in params:
+					if param in comment.body.lower():
+						howmany = param
+						break
+				
+				allparents = []
+				parent = comment.parent()
+				
+				onlysubmission = ""
+				if parent.name.startswith('t3'):
+					onlysubmission = getSubmissionHtml(comment.parent())
+					generateImage(onlysubmission, 1)
+					link2 = uploadsnapshot('out.jpg',parent.title, parent.id, comment.permalink,comment.permalink, "reddit posts")
+					comment.reply(generateReply("", link2))
 					return
+				while(parent.name.startswith('t1')):
+					allparents.append(parent)
+					parent = parent.parent()
+				submission = getSubmissionHtml(parent)
 
 
-commentsnapbot()
+				parentcount = len(allparents) #for page size
+				allparents = allparents[::-1]
+				count = 0
+				chaintotop = ""
+				for p in allparents:
+					chaintotop += getCommentHtml(p, count)
+					count = count + 1
+				
+				totalcomment = count
+				
+				allofhtml = submission + chaintotop
+				generateImage(allofhtml, totalcomment)
+				link2 = uploadsnapshot('out.jpg',parent.title, parent.id, comment.id,comment.permalink, "reddit comments")
+				generateImage(getCommentHtml(comment.parent(), 0), 0)
+				link1 = uploadsnapshot('out.jpg',parent.title, parent.id, comment.id,comment.permalink,"reddit posts")
+				
+				comment.reply(generateReply(link1, link2))
+				print("commented on post!!")
+				comment.save()
+				return
+
+
+while True:
+	snapshotbot()

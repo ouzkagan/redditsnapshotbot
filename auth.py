@@ -33,7 +33,7 @@ def authenticate():
 	#credentials = client.authorize(pin, 'pin')
 	client.set_user_auth(access_token, refresh_token)
 
-	print("Authentication successful! Here are the details:")
+	print("Authentication successful!")
 	#print("   Access token:  {0}".format(credentials['access_token']))
 	#print("   Refresh token: {0}".format(credentials['refresh_token']))
 

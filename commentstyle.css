@@ -17,8 +17,13 @@ a{
   color: #4fbcff;
     text-decoration: underline;
 }
-hr {
+.divider {
+  border-bottom:  1px solid #818384;
   border-color: #818384;
+  color: #818384;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
 }
 .comment{
     min-height: 50px;
@@ -306,8 +311,9 @@ padding-left: 33px;
 
 }
 .post-img{
-  max-height: 700px;
-  max-width: 100%;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Markdown_styles */

@@ -26,14 +26,14 @@ This bot is made to take snapshot of comments
 - [x] Imitate Reddit (post) styles
 - [ ] ~~Name bot to 'SnapshotBot' to make it more sense (taken)~~
 - [x] Start with shotting 1 comment
-- [ ] Shot Upper chain
+- [x] Shot Upper chain
 - [ ] Design a signature to make it official
 - [x] Upload image to Imgur
 - [ ] This version may cause an jumping some comments?
-- [ ] Design a reply for !Snapshot
+- [x] Design a reply for !Snapshot
 - [ ] Ask redditors if it's a good idea
 - [ ] Shot All chain in expanded ??
-- [ ] Shot Also Post?
+- [x] Shot Also Post?
 - [ ] Option names: 
 	* parent (get only parent) **default**
 	* withpost/all (from parent to post all) **default** 
