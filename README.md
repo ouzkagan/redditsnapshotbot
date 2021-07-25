@@ -20,6 +20,7 @@ This bot is made to take snapshot of comments
 
 ### To-do
 
+- [ ] **How to reply all comments without missing**??
 - [x] Find a library to turn text to image
 - [x] Imitate Reddit comment styles
 - [x] Imitate Reddit (post) styles
@@ -27,13 +28,19 @@ This bot is made to take snapshot of comments
 - [x] Start with shotting 1 comment
 - [ ] Shot Upper chain
 - [ ] Design a signature to make it official
-- [ ] Upload image to Imgur
+- [x] Upload image to Imgur
+- [ ] This version may cause an jumping some comments?
 - [ ] Design a reply for !Snapshot
 - [ ] Ask redditors if it's a good idea
 - [ ] Shot All chain in expanded ??
 - [ ] Shot Also Post?
 - [ ] Option names: 
 	* parent (get only parent) **default**
-	* withpost/all (from parent to port all) 
-	* top (get all to first comment) **default**
+	* withpost/all (from parent to post all) **default** 
+	* top (get all to first comment) 
 	* tree (get all commented until that time)
+	* number (only get n parent comments)
+- [ ] Deploy on ?Heroku
+
+
+
