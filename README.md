@@ -1,8 +1,8 @@
 # redditcommentsnapshotbot
 
-This bot is made to take snapshot of comments
+Reddit Bot that snapshot comments chain of post and uploads it to imgur. 
 
-# work style
+# Working logic
 
 1. run comments
 2. find mention or similar
